@@ -9,6 +9,7 @@ IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@dracula-git-show-diff-sym
 IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-git-no-repo-message" "")
 IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-git-no-untracked-files" "false")
 IFS=' ' read -r -a show_remote_status <<< $(get_tmux_option "@dracula-git-show-remote-status" "false")
+IFS=' ' read -r -a show_tag <<< $(get_tmux_option "@dracula-git-show-tag" "false")
 
 # Get added, modified, updated and deleted files from git status
 getChanges()
@@ -129,6 +130,11 @@ getRemoteInfo()
     echo "$out"
 }
 
+getTag()
+{
+  echo "($(git -C $path describe))"
+}
+
 # return the final message for the status bar
 getMessage()
 {
@@ -162,6 +168,7 @@ getMessage()
             fi
         fi
 
+        [ "$show_tag" == "true" ] && output+=$(getTag)
         [ "$show_remote_status" == "true" ] && output+=$(getRemoteInfo)
         echo "$output"
     else
