@@ -21,15 +21,15 @@ getChanges()
 for i in $(git -C $path --no-optional-locks status -s)
 
     do
-      case $i in 
+      case $i in
       'A')
-        added+=1 
+        added+=1
       ;;
       'M')
         modified+=1
       ;;
       'U')
-        updated+=1 
+        updated+=1
       ;;
       'D')
        deleted+=1
@@ -43,8 +43,8 @@ for i in $(git -C $path --no-optional-locks status -s)
     [ $modified -gt 0 ] && output+=" ${modified}M"
     [ $updated -gt 0 ] && output+=" ${updated}U"
     [ $deleted -gt 0 ] && output+=" ${deleted}D"
-  
-    echo $output    
+
+    echo $output
 }
 
 
@@ -57,7 +57,7 @@ getPaneDir()
     if [ "$nextone" == "true" ]; then
        echo $i
        return
-    fi 
+    fi
     if [ "$i" == "1" ]; then
         nextone="true"
     fi
@@ -68,7 +68,7 @@ getPaneDir()
 # check if the current or diff symbol is empty to remove ugly padding
 checkEmptySymbol()
 {
-    symbol=$1    
+    symbol=$1
     if [ "$symbol" == "" ]; then
         echo "true"
     else
@@ -89,7 +89,7 @@ checkForChanges()
     else
         echo "false"
     fi
-}     
+}
 
 # check if a git repo exists in the directory
 checkForGitDir()
@@ -103,7 +103,7 @@ checkForGitDir()
 
 # return branch name if there is one
 getBranch()
-{   
+{
     if [ $(checkForGitDir) == "true" ]; then
         echo $(git -C $path rev-parse --abbrev-ref HEAD)
     else
@@ -136,10 +136,10 @@ getMessage()
         branch="$(getBranch)"
         output=""
 
-        if [ $(checkForChanges) == "true" ]; then 
-            
-            changes="$(getChanges)" 
-            
+        if [ $(checkForChanges) == "true" ]; then
+
+            changes="$(getChanges)"
+
             if [ "${hide_status}" == "false" ]; then
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
 		     output=$(echo "${changes} $branch")
@@ -170,10 +170,10 @@ getMessage()
 }
 
 main()
-{  
+{
     path=$(getPaneDir)
     getMessage
 }
 
 #run main driver program
-main 
+main
